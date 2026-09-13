@@ -1,0 +1,6 @@
+{
+  "name": "CineVault - Legal Movies & Archives",
+  "description": "Stream and legally download verified public domain and Creative Commons classic cinema, silent films, and cultural archives.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

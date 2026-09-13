@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="bn-BD" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CineVault - Legal Movies & Archives (এক ফাইলে সম্পূর্ণ ওয়েবসাইট)</title>
+  <meta name="description" content="Stream and legally download verified public domain and Creative Commons classic cinema, silent films, and cultural archives." />
+  <!-- Tailwind CSS CDN for Single HTML standalone running -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              900: '#1e3a8a',
+              950: '#030712',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #020617;
+      color: #f8fafc;
+      overflow-x: hidden;
+    }
+    .cinema-font {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #090d16;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155;
+    }
+  </style>
+
+  <!-- Adsterra / CPM Popunder & Social Bar scripts -->
+  <script src="https://pl31310468.profitableratecpmnetwork.com/b5/d0/23/b5d023214e7161eb0000d70bd24df61e.js"></script>
+  <script src="https://pl31310464.profitableratecpmnetwork.com/43/9a/32/439a324955475e12b09a40f6bde99724.js"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+
+  <!-- ================= HEADER ================= -->
+  <header class="sticky top-0 z-40 bg-slate-950/95 backdrop-blur-md border-b border-slate-800/80 shadow-2xl transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo -->
+      <a href="#" onclick="showCategory('all'); return false;" class="flex items-center gap-2.5 group cursor-pointer select-none">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-900/50">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
+          </svg>
+        </div>
+        <div>
+          <span class="text-xl font-black tracking-tight text-white group-hover:text-blue-400 transition-colors">
+            CINE<span class="text-blue-500">VAULT</span>
+          </span>
+          <span class="hidden sm:inline-block ml-1 text-[9px] font-bold px-1.5 py-0.2 bg-emerald-950 text-emerald-300 border border-emerald-500/40 rounded">
+            LEGAL ARCHIVES
+          </span>
+        </div>
+      </a>
+
+      <!-- Search Input -->
+      <div class="flex-1 max-w-md hidden sm:block relative">
+        <div class="relative flex items-center">
+          <svg class="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="মুভি, পরিচালক বা জনরা খুঁজুন..."
+            oninput="handleSearch(this.value)"
+            class="w-full pl-9 pr-4 py-1.5 text-xs bg-slate-900/90 border border-slate-700/80 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+          />
+        </div>
+      </div>
+
+      <!-- Action Buttons (WhatsApp, My List, Random) -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- WhatsApp Share Button -->
+        <button
+          type="button"
+          onclick="shareOnWhatsApp()"
+          class="flex items-center gap-1.5 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/40 font-semibold text-xs py-1.5 px-3 rounded-lg transition-all"
+          title="Share CineVault on WhatsApp"
+        >
+          <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+          </svg>
+          <span class="font-bold">WhatsApp</span>
+        </button>
+
+        <!-- Pick Random Movie -->
+        <button
+          type="button"
+          onclick="pickRandomMovie()"
+          class="hidden sm:flex items-center gap-1.5 bg-blue-600/10 hover:bg-blue-600/20 text-blue-300 border border-blue-500/30 font-semibold text-xs py-1.5 px-3 rounded-lg transition-all"
+        >
+          <span>🎲 Random</span>
+        </button>
+
+        <!-- My List counter -->
+        <button
+          type="button"
+          onclick="showCategory('mylist')"
+          class="flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700/80 font-semibold text-xs py-1.5 px-3 rounded-lg transition-all"
+        >
+          <span>⭐ My List</span>
+          <span id="myListBadge" class="bg-blue-600 text-white text-[10px] px-1.5 py-0.2 rounded-full font-bold">0</span>
+        </button>
+        <!-- Blogger Upload & Download Help Button -->
+        <button
+          type="button"
+          onclick="openBloggerGuide()"
+          class="flex items-center gap-1.5 bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/40 font-semibold text-xs py-1.5 px-3 rounded-lg transition-all"
+          title="Blogger-এ আপলোড ও সেটআপ গাইড"
+        >
+          <span>🌐 Blogger গাইড</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= TOP LEADERBOARD AD BANNER (728x90 & 320x50) ================= -->
+  <div class="w-full bg-slate-950/90 border-b border-slate-900 py-3 flex flex-col items-center justify-center">
+    <span class="text-[9px] text-slate-500 uppercase tracking-widest font-mono mb-1">Sponsored Advertisement</span>
+    
+    <!-- Desktop 728x90 -->
+    <div class="hidden md:flex justify-center items-center w-[728px] h-[90px] bg-slate-900/40 rounded border border-slate-800/80 overflow-hidden">
+      <script>
+        atOptions = {
+          'key' : '045d19d6e2d9e04777df2a216063ab7d',
+          'format' : 'iframe',
+          'height' : 90,
+          'width' : 728,
+          'params' : {}
+        };
+      </script>
+      <script src="https://www.highrevenueformat.com/045d19d6e2d9e04777df2a216063ab7d/invoke.js"></script>
+    </div>
+
+    <!-- Mobile 320x50 -->
+    <div class="flex md:hidden justify-center items-center w-[320px] h-[50px] bg-slate-900/40 rounded border border-slate-800/80 overflow-hidden">
+      <script>
+        atOptions = {
+          'key' : '0faf1d6c5740ea1332526cb63a2524ab',
+          'format' : 'iframe',
+          'height' : 50,
+          'width' : 320,
+          'params' : {}
+        };
+      </script>
+      <script src="https://www.highrevenueformat.com/0faf1d6c5740ea1332526cb63a2524ab/invoke.js"></script>
+    </div>
+  </div>
+
+  <!-- ================= HERO FEATURED MOVIE ================= -->
+  <section id="heroSection" class="relative w-full bg-slate-900 overflow-hidden border-b border-slate-800">
+    <!-- Hero Backdrop Image -->
+    <div class="absolute inset-0 bg-cover bg-center opacity-30" style="background-image: url('https://archive.org/services/img/Night.Of.The.Living.Dead_1080p');"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/90 to-transparent"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 flex flex-col md:flex-row items-center gap-8">
+      <div class="flex-1 space-y-4">
+        <div class="flex items-center gap-2 flex-wrap text-xs">
+          <span class="bg-blue-600 text-white font-extrabold px-2.5 py-0.5 rounded shadow">FEATURED ARCHIVE</span>
+          <span class="bg-emerald-950 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded font-bold">PUBLIC DOMAIN</span>
+          <span class="text-slate-400">1968 • 96 min • Horror / Classic</span>
+        </div>
+
+        <h1 class="text-3xl sm:text-5xl font-black text-white cinema-font leading-tight drop-shadow-md">
+          Night of the Living Dead
+        </h1>
+
+        <p class="text-slate-300 text-sm sm:text-base max-w-2xl leading-relaxed">
+          জর্জ এ. রোমেরোর কালজয়ী হরর ক্লাসিক। একটি নির্জন খামারবাড়িতে আটকা পড়া একদল মানুষের বেঁচে থাকার রোমাঞ্চকর লড়াই। কপিরাইট নোটিশ না থাকার কারণে ছবিটি সম্পূর্ণ পাবলিক ডোমেইন এবং বৈধভাবে যেকোনো স্থানে দেখার ও ডাউনলোডের জন্য উন্মুক্ত।
+        </p>
+
+        <div class="flex items-center gap-3 pt-2 flex-wrap">
+          <button
+            onclick="playMovie('Night.Of.The.Living.Dead_1080p')"
+            class="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm px-6 py-3 rounded-xl shadow-lg shadow-blue-900/50 transition-all hover:scale-105 cursor-pointer"
+          >
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <span>WATCH MOVIE</span>
+          </button>
+
+          <button
+            onclick="openDownloadModal('Night.Of.The.Living.Dead_1080p')"
+            class="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-white font-semibold text-sm px-5 py-3 rounded-xl border border-slate-700 transition-all cursor-pointer"
+          >
+            <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            <span>DOWNLOAD</span>
+          </button>
+
+          <button
+            onclick="shareMovieWhatsApp('Night.Of.The.Living.Dead_1080p')"
+            class="flex items-center gap-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/40 text-sm font-semibold px-4 py-3 rounded-xl transition-all cursor-pointer"
+          >
+            <span>WhatsApp-এ শেয়ার</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Hero Poster Preview -->
+      <div class="w-48 sm:w-60 flex-shrink-0 aspect-[2/3] rounded-2xl overflow-hidden shadow-2xl border border-slate-700/80 group relative">
+        <img
+          src="https://archive.org/services/img/Night.Of.The.Living.Dead_1080p"
+          alt="Night of the Living Dead Poster"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          onerror="this.src='https://archive.org/services/img/NightOfTheLivingDead'"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-3">
+          <span class="text-[11px] font-bold text-slate-300">George A. Romero (1968)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CATEGORY FILTER TABS ================= -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
+    <div class="flex items-center justify-between flex-wrap gap-4 border-b border-slate-800 pb-4">
+      <div class="flex items-center gap-2 overflow-x-auto pb-1 max-w-full">
+        <button onclick="showCategory('all')" id="tab-all" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-blue-600 text-white">All Movies</button>
+        <button onclick="showCategory('Horror')" id="tab-Horror" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white bg-slate-900 hover:bg-slate-800">Horror</button>
+        <button onclick="showCategory('Sci-Fi')" id="tab-Sci-Fi" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white bg-slate-900 hover:bg-slate-800">Sci-Fi</button>
+        <button onclick="showCategory('Comedy')" id="tab-Comedy" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white bg-slate-900 hover:bg-slate-800">Comedy</button>
+        <button onclick="showCategory('Drama')" id="tab-Drama" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white bg-slate-900 hover:bg-slate-800">Drama</button>
+        <button onclick="showCategory('Mystery')" id="tab-Mystery" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white bg-slate-900 hover:bg-slate-800">Mystery</button>
+        <button onclick="showCategory('mylist')" id="tab-mylist" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white bg-slate-900 hover:bg-slate-800">⭐ My List</button>
+      </div>
+
+      <div class="text-xs text-slate-400 flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+        <span id="movieCountLabel">12 Verified Classics Ready</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= NATIVE AD CONTAINER ================= -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+    <div class="p-3 bg-slate-900/70 border border-slate-800 rounded-2xl overflow-hidden shadow-md">
+      <div class="flex items-center justify-between pb-1.5 mb-2 border-b border-slate-800/80">
+        <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">স্পন্সরড রিকমেন্ডেশন (Sponsored)</span>
+        <span class="text-[10px] font-mono text-slate-500 uppercase">Ads</span>
+      </div>
+      <div class="min-h-[100px] w-full flex items-center justify-center">
+        <script async="async" data-cfasync="false" src="https://pl31310465.profitableratecpmnetwork.com/c239e247cc4bef465bb9b4c45086c883/invoke.js"></script>
+        <div id="container-c239e247cc4bef465bb9b4c45086c883"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MOVIES GRID ================= -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex-1">
+    <div id="moviesGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+      <!-- Generated Dynamically by JS -->
+    </div>
+    <div id="emptyMessage" class="hidden text-center py-16 text-slate-400 space-y-3">
+      <p class="text-lg font-semibold text-white">কোনো মুভি পাওয়া যায়নি</p>
+      <p class="text-xs text-slate-500">অন্য কোনো নাম দিয়ে সার্চ করুন বা 'All Movies' নির্বাচন করুন।</p>
+    </div>
+
+    <!-- ================= CONTENT BANNER (468x60 & 320x50) ================= -->
+    <div class="mt-8 pt-4 border-t border-slate-800/80 flex flex-col items-center justify-center">
+      <span class="text-[9px] text-slate-500 uppercase tracking-widest font-mono mb-1">Sponsored Advertisement</span>
+      <div class="hidden sm:flex justify-center items-center w-[468px] h-[60px] bg-slate-900/40 rounded border border-slate-800/80 overflow-hidden">
+        <script>
+          atOptions = {
+            'key' : 'bcdb2bfa3fbe2cddb3146bcc1d21c19a',
+            'format' : 'iframe',
+            'height' : 60,
+            'width' : 468,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highrevenueformat.com/bcdb2bfa3fbe2cddb3146bcc1d21c19a/invoke.js"></script>
+      </div>
+      <div class="flex sm:hidden justify-center items-center w-[320px] h-[50px] bg-slate-900/40 rounded border border-slate-800/80 overflow-hidden">
+        <script>
+          atOptions = {
+            'key' : '0faf1d6c5740ea1332526cb63a2524ab',
+            'format' : 'iframe',
+            'height' : 50,
+            'width' : 320,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highrevenueformat.com/0faf1d6c5740ea1332526cb63a2524ab/invoke.js"></script>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= VIDEO PLAYER MODAL ================= -->
+  <div id="playerModal" class="fixed inset-0 z-50 bg-black/95 flex flex-col items-center justify-center p-2 sm:p-4 hidden">
+    <!-- Close / Top Bar -->
+    <div class="w-full max-w-5xl flex items-center justify-between pb-3 text-white">
+      <div>
+        <h3 id="playerTitle" class="text-base sm:text-lg font-bold">Movie Title</h3>
+        <p id="playerSubtitle" class="text-xs text-slate-400">Public Domain Archive Stream</p>
+      </div>
+      <button
+        type="button"
+        onclick="closePlayer()"
+        class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
+      >
+        ✕ CLOSE
+      </button>
+    </div>
+
+    <!-- Video Container -->
+    <div class="w-full max-w-5xl aspect-video bg-black rounded-xl overflow-hidden shadow-2xl relative flex items-center justify-center border border-slate-800">
+      <video
+        id="videoElement"
+        controls
+        autoplay
+        playsinline
+        class="w-full h-full object-contain"
+        onerror="handleVideoPlaybackError()"
+      >
+        Your browser does not support HTML5 video.
+      </video>
+
+      <!-- Error State inside Player -->
+      <div id="playerErrorOverlay" class="absolute inset-0 bg-slate-950/95 flex flex-col items-center justify-center p-6 text-center space-y-3 hidden">
+        <p class="text-sm font-bold text-amber-400">ভিডিও সরাসরি প্লে হতে সমস্যা হচ্ছে (CORS or codec restriction)</p>
+        <p class="text-xs text-slate-400 max-w-md">আপনি আর্কাইভের অফিশিয়াল প্লেয়ারে দেখতে পারেন অথবা সরাসরি ফাইল ডাউনলোড করে নিতে পারেন।</p>
+        <div class="flex items-center gap-3 pt-2">
+          <a id="playerArchiveLink" href="#" target="_blank" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-lg shadow">
+            Open in Archive Player
+          </a>
+          <button id="playerRetryDownloadBtn" onclick="" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-lg border border-slate-700">
+            Download Video
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= DOWNLOAD MODAL ================= -->
+  <div id="downloadModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="fixed inset-0" onclick="closeDownloadModal()"></div>
+
+    <div class="relative w-full max-w-lg bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl z-10 p-5 sm:p-6 text-white space-y-5">
+      <!-- Header -->
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div>
+          <h3 class="text-lg font-bold text-white">Verified Legal Download</h3>
+          <p id="dlMovieTitle" class="text-xs text-slate-400">Movie Title</p>
+        </div>
+        <button onclick="closeDownloadModal()" class="p-1 rounded-lg text-slate-400 hover:text-white">✕</button>
+      </div>
+
+      <!-- Legal Badge -->
+      <div class="p-3 bg-emerald-950/50 border border-emerald-500/40 rounded-xl text-xs text-emerald-300">
+        <strong class="text-white block font-bold mb-1">বৈধ পাবলিক ডোমেইন সিনেমা:</strong>
+        এই চলচ্চিত্রটি উন্মুক্ত ও কপিরাইটমুক্ত। আপনি ব্যক্তিগত বা পাবলিকভাবে এটি সম্পূর্ণ বিনামূল্যে সেভ ও শেয়ার করতে পারেন।
+      </div>
+
+      <!-- Bangla Instructions -->
+      <div class="p-3.5 bg-blue-950/40 border border-blue-500/30 rounded-xl text-xs text-slate-300 space-y-1">
+        <p class="font-bold text-blue-300">💡 ডাউনলোড নির্দেশিকা (How to Download):</p>
+        <ul class="list-disc list-inside space-y-1 text-[11px] text-slate-300 pt-1">
+          <li><strong>সরাসরি ডাউনলোড:</strong> নিচের <strong>&quot;DOWNLOAD MP4&quot;</strong> বাটনে চাপ দিন।</li>
+          <li><strong>মোবাইলে সেভ করুন:</strong> ভিডিও ওপেন হলে স্ক্রিনে <strong>চেপে ধরে রাখুন (Long Press)</strong> এবং <strong>&quot;Download Video&quot;</strong> সিলেক্ট করুন।</li>
+          <li><strong>পিসিতে সেভ করুন:</strong> মাউসের <strong>Right Click</strong> করে <strong>&quot;Save video as...&quot;</strong> সিলেক্ট করুন।</li>
+        </ul>
+      </div>
+
+      <!-- File Details & Actions -->
+      <div id="dlFileCard" class="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-3">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-bold text-white text-sm" id="dlFormatLabel">MP4 Video (H.264)</span>
+          <span class="text-slate-400" id="dlFileSize">1.2 GB</span>
+        </div>
+        <p class="text-[11px] font-mono text-slate-400 truncate" id="dlFileName">filename.mp4</p>
+
+        <div class="flex items-center flex-wrap gap-2 pt-2 border-t border-slate-800">
+          <!-- Primary Download Button -->
+          <button
+            id="dlPrimaryBtn"
+            class="flex-1 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-md transition-all text-center cursor-pointer"
+          >
+            DOWNLOAD MP4
+          </button>
+
+          <!-- Copy Link -->
+          <button
+            id="dlCopyBtn"
+            onclick="copyDownloadUrl()"
+            class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs py-2.5 px-3 rounded-xl border border-slate-700 transition-all"
+          >
+            Copy URL
+          </button>
+
+          <!-- WhatsApp share file -->
+          <button
+            id="dlWhatsAppBtn"
+            onclick="shareCurrentDlWhatsApp()"
+            class="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 text-xs py-2.5 px-3 rounded-xl border border-emerald-500/40 transition-all font-semibold"
+          >
+            WhatsApp
+          </button>
+        </div>
+
+        <!-- High-Speed / Direct Sponsor Link -->
+        <div class="pt-2">
+          <a
+            href="https://www.profitableratecpmnetwork.com/ft94kk9rkm?key=a4de72b8b7c9da73efa900fda0bad8a2"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center justify-center gap-2 w-full py-2 px-3 rounded-xl bg-gradient-to-r from-amber-600/30 to-orange-600/30 border border-amber-500/40 text-amber-300 hover:text-amber-200 font-bold text-xs shadow transition-all"
+          >
+            <span>⚡ High-Speed Direct Mirror (Server 2)</span>
+          </a>
+        </div>
+
+        <!-- 160x300 Ad Container -->
+        <div class="flex flex-col items-center justify-center pt-2">
+          <span class="text-[9px] text-slate-500 uppercase tracking-widest font-mono mb-1">Sponsored</span>
+          <div class="w-[160px] h-[300px] bg-slate-900/40 rounded border border-slate-800/80 overflow-hidden flex items-center justify-center">
+            <script>
+              atOptions = {
+                'key' : 'a299b54e28f29ee57535cbd4d6b113e6',
+                'format' : 'iframe',
+                'height' : 300,
+                'width' : 160,
+                'params' : {}
+              };
+            </script>
+            <script src="https://www.highrevenueformat.com/a299b54e28f29ee57535cbd4d6b113e6/invoke.js"></script>
+          </div>
+        </div>
+      </div>
+
+      <!-- Archive Source Link -->
+      <div class="text-center pt-1">
+        <a id="dlSourceLink" href="#" target="_blank" class="text-xs text-blue-400 hover:underline">
+          View official record on Internet Archive ↗
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= BLOGGER GUIDE MODAL ================= -->
+  <div id="bloggerGuideModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="fixed inset-0" onclick="closeBloggerGuide()"></div>
+
+    <div class="relative w-full max-w-2xl bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl z-10 p-5 sm:p-6 text-white space-y-4 max-h-[85vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+          🌐 ব্লগার (Blogger) ও হোয়াটসঅ্যাপে আপলোড গাইড
+        </h3>
+        <button onclick="closeBloggerGuide()" class="p-1 rounded-lg text-slate-400 hover:text-white">✕</button>
+      </div>
+
+      <div class="p-3 bg-blue-950/40 border border-blue-500/30 rounded-xl text-xs text-slate-300">
+        <p class="font-bold text-blue-300 mb-1">কীভাবে ব্লগারে আপলোড করবেন (Blogger Setup):</p>
+        <ol class="list-decimal list-inside space-y-2 text-slate-300">
+          <li><strong>Blogger.com</strong> এ লগইন করে আপনার ব্লগে যান।</li>
+          <li>বাম মেনু থেকে <strong>Pages</strong> এ গিয়ে <strong>+ New Page</strong> খুলুন।</li>
+          <li>উপরে বামের কলম আইকনে চাপ দিয়ে <strong>&quot;HTML View&quot;</strong> সিলেক্ট করুন।</li>
+          <li>এই ফাইলের সব কোড (Ctrl + A দিয়ে সব সিলেক্ট করে Ctrl + C) কপি করে ব্লগারে পেস্ট (Ctrl + V) করে দিন।</li>
+          <li>উপরে <strong>&quot;Publish&quot;</strong> বাটনে চাপ দিন। আপনার নিজের মুভি ওয়েবসাইট লাইভ হয়ে যাবে এবং অ্যাডগুলো অটোমেটিক চলতে থাকবে!</li>
+        </ol>
+      </div>
+
+      <div class="p-3 bg-emerald-950/40 border border-emerald-500/30 rounded-xl text-xs text-slate-300 space-y-1">
+        <p class="font-bold text-emerald-300">📲 হোয়াটসঅ্যাপে প্রচার (WhatsApp Sharing):</p>
+        <p>আপনার ব্লগের লিংক কপি করে WhatsApp গ্রুপ বা বন্ধুদের পাঠান। ভিজিটররা মুভি দেখতে বা ডাউনলোড করতে আসলেই অ্যাড শো হবে ও আয় তৈরি হবে।</p>
+      </div>
+
+      <div class="text-right pt-2">
+        <button onclick="closeBloggerGuide()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold">
+          বুঝেছি (Close)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-950 border-t border-slate-800/80 py-8 mt-12 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 space-y-2">
+      <p class="font-bold text-slate-400">CINEVAULT • 100% Legal Public Domain & Creative Commons Movies</p>
+      <p>সকল চলচ্চিত্র ইন্টারনেট আর্কাইভ ও উন্মুক্ত সাংস্কৃতিক সংগ্রহশালা থেকে সংগৃহীত। কোনো কপিরাইটযুক্ত কনটেন্ট নেই।</p>
+      <p class="text-[11px] text-slate-600">Generated as a self-contained Single-File HTML application.</p>
+    </div>
+  </footer>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // Embedded Catalog of 12 Verified Public Domain Masterpieces
+    const MOVIES = [
+      {
+        id: "night_of_the_living_dead_1968",
+        identifier: "Night.Of.The.Living.Dead_1080p",
+        title: "Night of the Living Dead",
+        year: 1968,
+        genres: ["Horror", "Mystery", "Classic"],
+        runtime: "96 min",
+        rating: "8.9",
+        director: "George A. Romero",
+        posterUrl: "https://archive.org/services/img/Night.Of.The.Living.Dead_1080p",
+        streamUrl: "https://archive.org/download/Night.Of.The.Living.Dead_1080p/NightOfTheLivingDead.mp4",
+        fileName: "NightOfTheLivingDead.mp4",
+        fileSize: "596 MB",
+        copyrightStatus: "Public Domain"
+      },
+      {
+        id: "his_girl_friday_1940",
+        identifier: "his_girl_friday",
+        title: "His Girl Friday",
+        year: 1940,
+        genres: ["Comedy", "Romance", "Drama"],
+        runtime: "92 min",
+        rating: "8.6",
+        director: "Howard Hawks",
+        posterUrl: "https://archive.org/services/img/his_girl_friday",
+        streamUrl: "https://archive.org/download/his_girl_friday/his_girl_friday_512kb.mp4",
+        fileName: "his_girl_friday.mp4",
+        fileSize: "680 MB",
+        copyrightStatus: "Public Domain"
+      },
+      {
+        id: "nosferatu_1922",
+        identifier: "Nosferatu_most_complete_version_93_mins.",
+        title: "Nosferatu: A Symphony of Horror",
+        year: 1922,
+        genres: ["Horror", "Classic", "Silent"],
+        runtime: "93 min",
+        rating: "8.8",
+        director: "F.W. Murnau",
+        posterUrl: "https://archive.org/services/img/Nosferatu_most_complete_version_93_mins.",
+        streamUrl: "https://archive.org/download/Nosferatu_most_complete_version_93_mins./Nosferatu_most_complete_version_93_mins..mp4",
+        fileName: "Nosferatu_1922_Restored.mp4",
+        fileSize: "720 MB",
+        copyrightStatus: "Public Domain"
+      },
+      {
+        id: "the_general_1926",
+        identifier: "The_General_Buster_Keaton",
+        title: "The General",
+        year: 1926,
+        genres: ["Comedy", "Action", "Adventure", "Silent"],
+        runtime: "79 min",
+        rating: "8.7",
+        director: "Buster Keaton",
+        posterUrl: "https://archive.org/services/img/The_General_Buster_Keaton",
+        streamUrl: "https://archive.org/download/The_General_Buster_Keaton/The_General_Buster_Keaton_512kb.mp4",
+        fileName: "The_General_Buster_Keaton.mp4",
+        fileSize: "512 MB",
+        copyrightStatus: "Public Domain"
+      },
+      {
+        id: "metropolis_1927",
+        identifier: "Metropolis1927EnglishVersion",
+        title: "Metropolis",
+        year: 1927,
+        genres: ["Sci-Fi", "Drama", "Classic", "Silent"],
+        runtime: "153 min",
+        rating: "9.0",
+        director: "Fritz Lang",
+        posterUrl: "https://archive.org/services/img/Metropolis1927EnglishVersion",
+        streamUrl: "https://archive.org/download/Metropolis1927EnglishVersion/Metropolis_1927_English_Version_512kb.mp4",
+        fileName: "Metropolis_1927_English.mp4",
+        fileSize: "920 MB",
+        copyrightStatus: "Public Domain"
+      },
+      {
+        id: "house_on_haunted_hill_1959",
+        identifier: "house_on_haunted_hill_ipod",
+        title: "House on Haunted Hill",
+        year: 1959,
+        genres: ["Horror", "Mystery"],
+        runtime: "75 min",
+        rating: "7.8",
+        director: "William Castle",
+        posterUrl: "https://archive.org/services/img/house_on_haunted_hill_ipod",
+        streamUrl: "https://archive.org/download/house_on_haunted_hill_ipod/house_on_haunted_hill_512kb.mp4",
+        fileName: "house_on_haunted_hill.mp4",
+        fileSize: "440 MB",
+        copyrightStatus: "Public Domain"
+      },
+      {
+        id: "sita_sings_the_blues_2008",
+        identifier: "Sita_Sings_the_Blues",
+        title: "Sita Sings the Blues",
+        year: 2008,
+        genres: ["Animation", "Comedy", "Musical"],
+        runtime: "82 min",
+        rating: "8.3",
+        director: "Nina Paley",
+        posterUrl: "https://archive.org/services/img/Sita_Sings_the_Blues",
+        streamUrl: "https://archive.org/download/Sita_Sings_the_Blues/Sita_Sings_the_Blues_512kb.mp4",
+        fileName: "Sita_Sings_the_Blues_HD.mp4",
+        fileSize: "680 MB",
+        copyrightStatus: "CC0"
+      },
+      {
+        id: "charade_1963",
+        identifier: "Charade_1953",
+        title: "Charade",
+        year: 1963,
+        genres: ["Mystery", "Comedy", "Thriller", "Romance"],
+        runtime: "113 min",
+        rating: "8.7",
+        director: "Stanley Donen",
+        posterUrl: "https://archive.org/services/img/Charade_1953",
+        streamUrl: "https://archive.org/download/Charade_1953/Charade_1963_512kb.mp4",
+        fileName: "Charade_1963.mp4",
+        fileSize: "750 MB",
+        copyrightStatus: "Public Domain"
+      },
+      {
+        id: "the_stranger_1946",
+        identifier: "TheStranger_0",
+        title: "The Stranger",
+        year: 1946,
+        genres: ["Film-Noir", "Crime", "Mystery", "Drama"],
+        runtime: "95 min",
+        rating: "8.1",
+        director: "Orson Welles",
+        posterUrl: "https://archive.org/services/img/TheStranger_0",
+        streamUrl: "https://archive.org/download/TheStranger_0/The_Stranger_1946_512kb.mp4",
+        fileName: "The_Stranger_1946.mp4",
+        fileSize: "590 MB",
+        copyrightStatus: "Public Domain"
+      },
+      {
+        id: "battleship_potemkin_1925",
+        identifier: "BattleshipPotemkin",
+        title: "Battleship Potemkin",
+        year: 1925,
+        genres: ["Drama", "History", "Silent"],
+        runtime: "75 min",
+        rating: "8.8",
+        director: "Sergei Eisenstein",
+        posterUrl: "https://archive.org/services/img/BattleshipPotemkin",
+        streamUrl: "https://archive.org/download/BattleshipPotemkin/Battleship_Potemkin_1925_512kb.mp4",
+        fileName: "BattleshipPotemkin_1925.mp4",
+        fileSize: "530 MB",
+        copyrightStatus: "Public Domain"
+      },
+      {
+        id: "carnival_of_souls_1962",
+        identifier: "CarnivalofSouls",
+        title: "Carnival of Souls",
+        year: 1962,
+        genres: ["Horror", "Mystery"],
+        runtime: "78 min",
+        rating: "7.9",
+        director: "Herk Harvey",
+        posterUrl: "https://archive.org/services/img/CarnivalofSouls",
+        streamUrl: "https://archive.org/download/CarnivalofSouls/Carnival_of_Souls_1962_512kb.mp4",
+        fileName: "Carnival_of_Souls_1962.mp4",
+        fileSize: "490 MB",
+        copyrightStatus: "Public Domain"
+      },
+      {
+        id: "big_buck_bunny_2008",
+        identifier: "BigBuckBunny_328",
+        title: "Big Buck Bunny",
+        year: 2008,
+        genres: ["Animation", "Comedy"],
+        runtime: "10 min",
+        rating: "8.5",
+        director: "Sacha Goedegebure",
+        posterUrl: "https://archive.org/services/img/BigBuckBunny_328",
+        streamUrl: "https://archive.org/download/BigBuckBunny_328/big_buck_bunny_1080p_surround.mp4",
+        fileName: "Big_Buck_Bunny_1080p.mp4",
+        fileSize: "280 MB",
+        copyrightStatus: "Creative Commons"
+      }
+    ];
+
+    // State Management
+    let currentCategory = 'all';
+    let currentSearch = '';
+    let myList = JSON.parse(localStorage.getItem('cinevault_my_list') || '[]');
+    let currentModalMovie = null;
+
+    // Initialize UI
+    function init() {
+      updateMyListBadge();
+      renderMovies();
+    }
+
+    function updateMyListBadge() {
+      const badge = document.getElementById('myListBadge');
+      if (badge) badge.innerText = myList.length;
+    }
+
+    function toggleMyList(identifier) {
+      const idx = myList.indexOf(identifier);
+      if (idx >= 0) {
+        myList.splice(idx, 1);
+      } else {
+        myList.unshift(identifier);
+      }
+      localStorage.setItem('cinevault_my_list', JSON.stringify(myList));
+      updateMyListBadge();
+      renderMovies();
+    }
+
+    function showCategory(cat) {
+      currentCategory = cat;
+      // Update Tab Styles
+      ['all', 'Horror', 'Sci-Fi', 'Comedy', 'Drama', 'Mystery', 'mylist'].forEach(t => {
+        const btn = document.getElementById('tab-' + t);
+        if (btn) {
+          if (t === cat) {
+            btn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-blue-600 text-white';
+          } else {
+            btn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white bg-slate-900 hover:bg-slate-800';
+          }
+        }
+      });
+      renderMovies();
+    }
+
+    function handleSearch(val) {
+      currentSearch = (val || '').toLowerCase().trim();
+      renderMovies();
+    }
+
+    function pickRandomMovie() {
+      const randomIndex = Math.floor(Math.random() * MOVIES.length);
+      const m = MOVIES[randomIndex];
+      playMovie(m.identifier);
+    }
+
+    function renderMovies() {
+      const grid = document.getElementById('moviesGrid');
+      const emptyMsg = document.getElementById('emptyMessage');
+      const countLabel = document.getElementById('movieCountLabel');
+
+      let filtered = MOVIES.filter(m => {
+        // Category Filter
+        if (currentCategory === 'mylist') {
+          if (!myList.includes(m.identifier)) return false;
+        } else if (currentCategory !== 'all') {
+          if (!m.genres.includes(currentCategory)) return false;
+        }
+        // Search Filter
+        if (currentSearch) {
+          const matchTitle = m.title.toLowerCase().includes(currentSearch);
+          const matchDir = m.director.toLowerCase().includes(currentSearch);
+          const matchGenre = m.genres.some(g => g.toLowerCase().includes(currentSearch));
+          if (!matchTitle && !matchDir && !matchGenre) return false;
+        }
+        return true;
+      });
+
+      countLabel.innerText = `${filtered.length} Movies Available`;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        emptyMsg.classList.remove('hidden');
+        return;
+      }
+
+      emptyMsg.classList.add('hidden');
+      grid.innerHTML = filtered.map(m => {
+        const inList = myList.includes(m.identifier);
+        return `
+          <div class="group relative flex flex-col rounded-xl overflow-hidden bg-slate-900/90 border border-slate-800/80 shadow-md hover:shadow-2xl hover:shadow-blue-900/40 transition-all transform hover:-translate-y-1">
+            <!-- Poster -->
+            <div class="relative aspect-[2/3] overflow-hidden bg-slate-950 cursor-pointer" onclick="playMovie('${m.identifier}')">
+              <img
+                src="${m.posterUrl}"
+                alt="${m.title}"
+                loading="lazy"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                onerror="this.onerror=null; this.src='https://archive.org/services/img/${m.identifier}'"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-80"></div>
+              
+              <!-- Badges -->
+              <div class="absolute top-2 left-2 flex gap-1">
+                <span class="bg-blue-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded">FREE</span>
+                <span class="bg-emerald-900/90 text-emerald-200 text-[9px] font-bold px-1.5 py-0.5 rounded">${m.copyrightStatus}</span>
+              </div>
+
+              <!-- Play Icon on Hover -->
+              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg">
+                  <svg class="w-5 h-5 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Content Details -->
+            <div class="p-3 flex flex-col justify-between flex-1 gap-2 bg-slate-900">
+              <div>
+                <h4 class="text-white font-bold text-xs line-clamp-1 group-hover:text-blue-400 transition-colors" title="${m.title}">${m.title}</h4>
+                <div class="flex items-center justify-between text-[10px] text-slate-400 mt-1">
+                  <span>${m.year} • ${m.genres[0]}</span>
+                  <span class="text-amber-400 font-bold">★ ${m.rating}</span>
+                </div>
+              </div>
+
+              <!-- Action buttons -->
+              <div class="grid grid-cols-2 gap-1.5 pt-1">
+                <button
+                  onclick="playMovie('${m.identifier}')"
+                  class="bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-bold py-1 px-2 rounded-lg transition-colors cursor-pointer"
+                >
+                  PLAY
+                </button>
+                <button
+                  onclick="openDownloadModal('${m.identifier}')"
+                  class="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-[11px] font-semibold py-1 px-2 rounded-lg border border-slate-700 transition-colors cursor-pointer"
+                >
+                  DOWNLOAD
+                </button>
+              </div>
+
+              <div class="flex items-center justify-between pt-1 border-t border-slate-800/80 text-[10px] text-slate-400">
+                <button onclick="toggleMyList('${m.identifier}')" class="hover:text-white flex items-center gap-1 cursor-pointer">
+                  ${inList ? '★ Saved' : '+ My List'}
+                </button>
+                <button onclick="shareMovieWhatsApp('${m.identifier}')" class="text-emerald-400 hover:text-emerald-300 flex items-center gap-1 cursor-pointer">
+                  Share
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ================= VIDEO PLAYER =================
+    function playMovie(identifier) {
+      const movie = MOVIES.find(m => m.identifier === identifier);
+      if (!movie) return;
+
+      const modal = document.getElementById('playerModal');
+      const video = document.getElementById('videoElement');
+      const title = document.getElementById('playerTitle');
+      const subtitle = document.getElementById('playerSubtitle');
+      const errorOverlay = document.getElementById('playerErrorOverlay');
+      const archiveLink = document.getElementById('playerArchiveLink');
+      const retryDl = document.getElementById('playerRetryDownloadBtn');
+
+      title.innerText = movie.title + ' (' + movie.year + ')';
+      subtitle.innerText = 'Director: ' + movie.director + ' • ' + movie.copyrightStatus;
+      archiveLink.href = 'https://archive.org/details/' + movie.identifier;
+      retryDl.onclick = () => openDownloadModal(movie.identifier);
+
+      errorOverlay.classList.add('hidden');
+      video.src = movie.streamUrl;
+      video.load();
+      video.play().catch(() => {});
+
+      modal.classList.remove('hidden');
+    }
+
+    function closePlayer() {
+      const modal = document.getElementById('playerModal');
+      const video = document.getElementById('videoElement');
+      video.pause();
+      video.src = '';
+      modal.classList.add('hidden');
+    }
+
+    function handleVideoPlaybackError() {
+      const errorOverlay = document.getElementById('playerErrorOverlay');
+      errorOverlay.classList.remove('hidden');
+    }
+
+    // ================= DOWNLOAD MODAL =================
+    function openDownloadModal(identifier) {
+      const movie = MOVIES.find(m => m.identifier === identifier);
+      if (!movie) return;
+
+      currentModalMovie = movie;
+      const modal = document.getElementById('downloadModal');
+      document.getElementById('dlMovieTitle').innerText = movie.title + ' (' + movie.year + ')';
+      document.getElementById('dlFileName').innerText = movie.fileName;
+      document.getElementById('dlFileSize').innerText = movie.fileSize;
+      document.getElementById('dlSourceLink').href = 'https://archive.org/details/' + movie.identifier;
+
+      const primaryBtn = document.getElementById('dlPrimaryBtn');
+      primaryBtn.onclick = () => {
+        // Trigger browser save
+        const a = document.createElement('a');
+        a.href = movie.streamUrl;
+        a.setAttribute('download', movie.fileName);
+        a.setAttribute('target', '_blank');
+        a.setAttribute('rel', 'noopener noreferrer');
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => { if (document.body.contains(a)) document.body.removeChild(a); }, 200);
+        window.open(movie.streamUrl, '_blank');
+      };
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeDownloadModal() {
+      document.getElementById('downloadModal').classList.add('hidden');
+      currentModalMovie = null;
+    }
+
+    function copyDownloadUrl() {
+      if (!currentModalMovie) return;
+      navigator.clipboard.writeText(currentModalMovie.streamUrl).then(() => {
+        const btn = document.getElementById('dlCopyBtn');
+        btn.innerText = 'Copied!';
+        setTimeout(() => btn.innerText = 'Copy URL', 2000);
+      });
+    }
+
+    function shareCurrentDlWhatsApp() {
+      if (!currentModalMovie) return;
+      shareMovieWhatsApp(currentModalMovie.identifier);
+    }
+
+    // ================= WHATSAPP INTEGRATION =================
+    function shareOnWhatsApp() {
+      const text = encodeURIComponent(
+        "🎬 CineVault - Free & Legal Classical Cinema Streaming & Download:\n" + window.location.href
+      );
+      window.open('https://api.whatsapp.com/send?text=' + text, '_blank');
+    }
+
+    function shareMovieWhatsApp(identifier) {
+      const movie = MOVIES.find(m => m.identifier === identifier);
+      if (!movie) return;
+      const text = encodeURIComponent(
+        `🎬 CineVault Legal Movie:\n"${movie.title} (${movie.year})" [${movie.copyrightStatus}]\nDirector: ${movie.director}\nDownload & Stream: ${movie.streamUrl}`
+      );
+      window.open('https://api.whatsapp.com/send?text=' + text, '_blank');
+    }
+
+    // ================= BLOGGER GUIDE MODAL =================
+    function openBloggerGuide() {
+      const modal = document.getElementById('bloggerGuideModal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeBloggerGuide() {
+      const modal = document.getElementById('bloggerGuideModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    // Start App
+    window.onload = init;
+  </script>
+</body>
+</html>
